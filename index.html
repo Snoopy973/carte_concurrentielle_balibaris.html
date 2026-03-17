@@ -2,12 +2,22 @@
 <html lang="fr"><head><meta charset="UTF-8"><title>Analyse Concurrentielle — Balibaris</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>* {margin:0;padding:0;box-sizing:border-box;}body {font-family:'Inter',sans-serif;background:#f0f2f5;padding:40px;color:#1a1a2e;}h1 {text-align:center;font-size:32px;font-weight:800;margin-bottom:8px;color:#1a1a2e;}.subtitle {text-align:center;font-size:16px;color:#666;margin-bottom:40px;}.section-title {font-size:24px;font-weight:700;margin:50px 0 24px;padding-left:16px;border-left:5px solid #4A90D9;color:#2c3e50;}.grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;margin-bottom:40px;}.card {background:white;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:transform .2s,box-shadow .2s;}.card:hover {transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,0.12);}.card-header {padding:20px 24px;color:white;font-size:20px;font-weight:700;display:flex;align-items:center;gap:12px;}.card-body {padding:20px 24px;}.champions-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;margin-bottom:40px;}.champion-card {background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);}.champion-header {padding:20px 24px;display:flex;align-items:center;gap:14px;}.champion-rank {font-size:26px;}.champion-info {flex:1;}.champion-domain {color:white;font-weight:800;font-size:17px;}.champion-traffic {color:rgba(255,255,255,0.8);font-size:13px;margin-top:2px;}.champion-body {padding:20px 24px;}.champion-stat {display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f5f5f5;}.stat-label {font-size:13px;color:#888;}.stat-value {font-size:13px;font-weight:700;color:#2c3e50;}.legend {background:white;border-radius:12px;padding:20px 28px;margin-bottom:30px;box-shadow:0 2px 8px rgba(0,0,0,0.04);font-size:13px;color:#555;line-height:1.8;}.legend strong {color:#2c3e50;}.bali-badge {display:inline-flex;align-items:center;background:linear-gradient(135deg,#27AE60,#2ECC71);color:white;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;margin-top:12px;}.bali-absent {display:inline-flex;align-items:center;background:linear-gradient(135deg,#E74C3C,#C0392B);color:white;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;margin-top:12px;}.priority-table {width:100%;border-collapse:collapse;margin:20px 0;}.priority-table th {background:#2c3e50;color:white;padding:12px 16px;text-align:left;font-size:13px;}.priority-table td {padding:10px 16px;border-bottom:1px solid #eee;font-size:13px;}.priority-table tr:hover {background:#f8f9fa;}</style></head><body>
+<style>* {margin:0;padding:0;box-sizing:border-box;}body {font-family:'Inter',sans-serif;background:#f0f2f5;padding:40px;color:#1a1a2e;}h1 {text-align:center;font-size:32px;font-weight:800;margin-bottom:8px;color:#1a1a2e;}.subtitle {text-align:center;font-size:16px;color:#666;margin-bottom:40px;}.section-title {font-size:24px;font-weight:700;margin:50px 0 24px;padding-left:16px;border-left:5px solid #4A90D9;color:#2c3e50;}.grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;margin-bottom:40px;}.card {background:white;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:transform .2s,box-shadow .2s;}.card:hover {transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,0.12);}.card-header {padding:20px 24px;color:white;font-size:20px;font-weight:700;display:flex;align-items:center;gap:12px;}.card-body {padding:20px 24px;}.champions-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;margin-bottom:40px;}.champion-card {background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);}.champion-header {padding:20px 24px;display:flex;align-items:center;gap:14px;}.champion-rank {font-size:26px;}.champion-info {flex:1;}.champion-domain {color:white;font-weight:800;font-size:17px;}.champion-traffic {color:rgba(255,255,255,0.8);font-size:13px;margin-top:2px;}.champion-body {padding:20px 24px;}.champion-stat {display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f5f5f5;}.stat-label {font-size:13px;color:#888;}.stat-value {font-size:13px;font-weight:700;color:#2c3e50;}.legend {background:white;border-radius:12px;padding:20px 28px;margin-bottom:30px;box-shadow:0 2px 8px rgba(0,0,0,0.04);font-size:13px;color:#555;line-height:1.8;}.legend strong {color:#2c3e50;}.priority-table {width:100%;border-collapse:collapse;margin:20px 0;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.04);}.priority-table th {background:#2c3e50;color:white;padding:12px 16px;text-align:left;font-size:13px;}.priority-table td {padding:10px 16px;border-bottom:1px solid #eee;font-size:13px;}.priority-table tr:hover {background:#f8f9fa;}.nav-bar {background:white;border-radius:16px;padding:16px 24px;margin-bottom:30px;box-shadow:0 2px 12px rgba(0,0,0,0.06);display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}.nav-bar a {text-decoration:none;padding:8px 16px;border-radius:10px;font-size:13px;font-weight:600;color:#2c3e50;background:#f0f2f5;transition:all .2s;}.nav-bar a:hover {background:#4A90D9;color:white;}.genre-section {border:2px solid;border-radius:20px;padding:30px;margin:30px 0;}</style></head><body>
 <h1>🎯 Carte Concurrentielle — Balibaris</h1>
-<p class="subtitle">Qui domine quoi ? Analyse des positions SERP par catégorie, matière et couleur<br>
-<span style="font-size:13px;color:#aaa;">83 requêtes · 1594 résultats SERP · Score menace = Volume × Nb produits Balibaris · MAJ 17/03/2026</span></p>
-<div class="section-title">🏆 Top 10 Concurrents — Classés par menace réelle pour Balibaris</div>
-<div class="legend"><strong>📐 Score menace</strong> = Σ (Volume requête × Nb produits Balibaris) pour chaque requête où le concurrent est top 10. Plus le score est élevé, plus il s'oppose à Balibaris là où Balibaris a du catalogue et du volume.<br>Sources : SERP DataForSEO (83 requêtes, 1594 résultats) × Analyse Balibaris (891 combinaisons).</div>
+<p class="subtitle">Qui domine quoi ? Analyse des positions SERP par catégorie, matière, couleur et genre<br>
+<span style="font-size:13px;color:#aaa;">83 requêtes · 1594 résultats SERP · dont 41 requêtes genrées · Score menace = Volume × Nb produits Balibaris · MAJ 17/03/2026</span></p>
+<div class="nav-bar">
+<a href="#champions">🏆 Champions</a>
+<a href="#balibaris">📍 Balibaris</a>
+<a href="#genre">👤 Genre</a>
+<a href="#categories">📦 Catégories</a>
+<a href="#combos">🏷️ Combinaisons</a>
+<a href="#matieres">🧵 Matières</a>
+<a href="#couleurs">🎨 Couleurs</a>
+<a href="#priorites">🚨 Priorités</a>
+</div>
+<div id="champions" class="section-title">🏆 Top 10 Concurrents — Classés par menace réelle pour Balibaris</div>
+<div class="legend"><strong>📐 Score menace</strong> = Σ (Volume requête × Nb produits Balibaris) pour chaque requête où le concurrent est top 10.<br>Sources : SERP DataForSEO (83 requêtes, 1594 résultats) × Analyse Balibaris (891 combinaisons).</div>
 <div class="champions-grid">
 <div class="champion-card">
   <div class="champion-header" style="background:linear-gradient(135deg,#B7272B,#8B0000)">
@@ -284,8 +294,7 @@
   </div>
 </div>
 </div>
-<div class="section-title">📍 Positions actuelles de Balibaris</div>
-<div class="legend">Requêtes où Balibaris est dans le top 10.</div>
+<div id="balibaris" class="section-title">📍 Positions actuelles de Balibaris</div>
 <table class="priority-table"><tr><th>Requête</th><th>Position</th><th>Volume</th><th>Nb produits</th><th>Trafic estimé</th></tr>
 <tr><td><strong>echarpe homme</strong></td><td style="color:#E74C3C;font-weight:700;">#10</td><td>4·500</td><td>6</td><td>~67</td></tr>
 <tr><td><strong>pull coton</strong></td><td style="color:#E74C3C;font-weight:700;">#10</td><td>700</td><td>10</td><td>~10</td></tr>
@@ -293,7 +302,511 @@
 <tr><td><strong>pull homme coton</strong></td><td style="color:#E74C3C;font-weight:700;">#9</td><td>200</td><td>10</td><td>~4</td></tr>
 <tr><td><strong>blouson bleu</strong></td><td style="color:#27AE60;font-weight:700;">#2</td><td>100</td><td>6</td><td>~15</td></tr>
 </table>
-<div class="section-title">📦 Par Catégorie Produit</div>
+<div id="genre" class="section-title">👤 Par Genre — Champions</div>
+<div class="legend"><strong>👤 Dimension Genre</strong> — Analyse des concurrents sur les 41 requêtes contenant "homme" ou "femme". Ces requêtes représentent une intention d'achat qualifiée avec un fort potentiel de conversion.</div>
+<div class="genre-section" style="border-color:#2E86C120;background:#2E86C108;">
+    <div style="font-size:22px;font-weight:800;color:#2E86C1;margin-bottom:6px;">👔 Homme</div>
+    <div style="font-size:13px;color:#888;margin-bottom:20px;">41 requêtes genrées · 198·220 volume total</div>
+    <div class="champions-grid">
+<div class="champion-card">
+  <div class="champion-header" style="background:linear-gradient(135deg,#2E86C1,#1a1a2e)">
+    <div class="champion-rank">🥇</div>
+    <img src="https://www.google.com/s2/favicons?domain=celio.com&sz=64" style="width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.15);padding:2px" onerror="this.style.display='none'">
+    <div class="champion-info">
+      <div class="champion-domain">celio.com</div>
+      <div class="champion-traffic">Score menace : 1·912·810</div>
+    </div>
+  </div>
+  <div class="champion-body">
+    <div class="champion-stat"><span class="stat-label">Volume genré couvert</span><span class="stat-value">137·850 rech./mois</span></div>
+    <div class="champion-stat"><span class="stat-label">Trafic estimé capté</span><span class="stat-value">~37·740 visites/mois</span></div>
+    <div class="champion-stat"><span class="stat-label">Requêtes genrées top 10</span><span class="stat-value">25 requêtes</span></div>
+    <div style="margin-top:14px"><div style="font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Requêtes où ils dominent</div><div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;"><span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pull homme laine</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 jean homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pantalon homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chino homme bleu</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 blouson homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pantalon homme lin</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pull homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pull homme coton</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 sweat homme coton</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chemise homme blanc</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pantalon homme coton</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 sweat homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chemise homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 chemise homme 100% coton</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 chino homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 cardigan homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 chino homme beige</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 chemise homme lin</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 pull homme vert</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 chemise homme coton</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 pantalon homme beige</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 jean homme bleu</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 blouson homme bleu</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 jean homme denim</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#10 pull homme bleu</span></div></div>
+  </div>
+</div>
+<div class="champion-card">
+  <div class="champion-header" style="background:linear-gradient(135deg,#2E86C1,#1a1a2e)">
+    <div class="champion-rank">🥈</div>
+    <img src="https://www.google.com/s2/favicons?domain=izac.fr&sz=64" style="width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.15);padding:2px" onerror="this.style.display='none'">
+    <div class="champion-info">
+      <div class="champion-domain">izac.fr</div>
+      <div class="champion-traffic">Score menace : 1·465·640</div>
+    </div>
+  </div>
+  <div class="champion-body">
+    <div class="champion-stat"><span class="stat-label">Volume genré couvert</span><span class="stat-value">81·510 rech./mois</span></div>
+    <div class="champion-stat"><span class="stat-label">Trafic estimé capté</span><span class="stat-value">~11·851 visites/mois</span></div>
+    <div class="champion-stat"><span class="stat-label">Requêtes genrées top 10</span><span class="stat-value">13 requêtes</span></div>
+    <div style="margin-top:14px"><div style="font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Requêtes où ils dominent</div><div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;"><span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chino homme beige</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 pantalon homme beige</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 pantalon homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 pull homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 chemise homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 echarpe homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 chino homme bleu</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 blouson homme bleu</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 chemise homme blanc</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 cravate homme soie</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#5 chemise homme lin</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 chemise homme 100% coton</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 pantalon homme lin</span></div></div>
+  </div>
+</div>
+<div class="champion-card">
+  <div class="champion-header" style="background:linear-gradient(135deg,#2E86C1,#1a1a2e)">
+    <div class="champion-rank">🥉</div>
+    <img src="https://www.google.com/s2/favicons?domain=ikks.com&sz=64" style="width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.15);padding:2px" onerror="this.style.display='none'">
+    <div class="champion-info">
+      <div class="champion-domain">ikks.com</div>
+      <div class="champion-traffic">Score menace : 1·276·000</div>
+    </div>
+  </div>
+  <div class="champion-body">
+    <div class="champion-stat"><span class="stat-label">Volume genré couvert</span><span class="stat-value">58·000 rech./mois</span></div>
+    <div class="champion-stat"><span class="stat-label">Trafic estimé capté</span><span class="stat-value">~2·175 visites/mois</span></div>
+    <div class="champion-stat"><span class="stat-label">Requêtes genrées top 10</span><span class="stat-value">2 requêtes</span></div>
+    <div style="margin-top:14px"><div style="font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Requêtes où ils dominent</div><div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;"><span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#5 pull homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 chemise homme</span></div></div>
+  </div>
+</div>
+<div class="champion-card">
+  <div class="champion-header" style="background:linear-gradient(135deg,#2E86C1,#1a1a2e)">
+    <div class="champion-rank">#4</div>
+    <img src="https://www.google.com/s2/favicons?domain=bexley.fr&sz=64" style="width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.15);padding:2px" onerror="this.style.display='none'">
+    <div class="champion-info">
+      <div class="champion-domain">bexley.fr</div>
+      <div class="champion-traffic">Score menace : 1·222·520</div>
+    </div>
+  </div>
+  <div class="champion-body">
+    <div class="champion-stat"><span class="stat-label">Volume genré couvert</span><span class="stat-value">107·000 rech./mois</span></div>
+    <div class="champion-stat"><span class="stat-label">Trafic estimé capté</span><span class="stat-value">~4·272 visites/mois</span></div>
+    <div class="champion-stat"><span class="stat-label">Requêtes genrées top 10</span><span class="stat-value">19 requêtes</span></div>
+    <div style="margin-top:14px"><div style="font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Requêtes où ils dominent</div><div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;"><span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 echarpe homme coton</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 chemise homme blanc</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 ceinture homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 pull homme laine</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 echarpe homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 pull homme coton</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 chemise homme 100% coton</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 chaussures homme cuir</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 chemise homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 cardigan homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 chemise homme coton</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 blouson homme coton</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 cravate homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 chino homme beige</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 cravate homme soie</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 chino homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 chaussures homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#10 chino homme bleu</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#10 ceinture homme cuir</span></div></div>
+  </div>
+</div>
+<div class="champion-card">
+  <div class="champion-header" style="background:linear-gradient(135deg,#2E86C1,#1a1a2e)">
+    <div class="champion-rank">#5</div>
+    <img src="https://www.google.com/s2/favicons?domain=bensonandcherry.com&sz=64" style="width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.15);padding:2px" onerror="this.style.display='none'">
+    <div class="champion-info">
+      <div class="champion-domain">bensonandcherry.com</div>
+      <div class="champion-traffic">Score menace : 1·098·450</div>
+    </div>
+  </div>
+  <div class="champion-body">
+    <div class="champion-stat"><span class="stat-label">Volume genré couvert</span><span class="stat-value">60·910 rech./mois</span></div>
+    <div class="champion-stat"><span class="stat-label">Trafic estimé capté</span><span class="stat-value">~3·711 visites/mois</span></div>
+    <div class="champion-stat"><span class="stat-label">Requêtes genrées top 10</span><span class="stat-value">7 requêtes</span></div>
+    <div style="margin-top:14px"><div style="font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Requêtes où ils dominent</div><div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;"><span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 blouson homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 sweat homme coton</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#5 chemise homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 chemise homme coton</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 chemise homme 100% coton</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 sweat homme</span>
+<span style="background:#2E86C118;color:#2E86C1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#10 chino homme</span></div></div>
+  </div>
+</div>
+</div></div>
+<div style="margin-top:40px;"><div style="font-size:20px;font-weight:700;color:#2c3e50;margin-bottom:20px;padding-left:16px;border-left:4px solid #9B59B6;">🏷️👤 Combinaisons par Genre</div>
+<div class="legend">Concurrents dominants par type de combinaison genrée.</div>
+<div style="margin:30px 0 12px;font-size:18px;font-weight:700;color:#9B59B6;">👤 Type + Genre</div>
+<div class="grid">
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#1</span>
+    <img src="https://www.google.com/s2/favicons?domain=celio.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>celio.com</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">1·878·500</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">8</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 jean homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pantalon homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 blouson homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pull homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 sweat homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chemise homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 chino homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 cardigan homme</span></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#2</span>
+    <img src="https://www.google.com/s2/favicons?domain=izac.fr&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>izac.fr</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">1·456·000</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">4</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 pantalon homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 pull homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 chemise homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 echarpe homme</span></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#3</span>
+    <img src="https://www.google.com/s2/favicons?domain=ikks.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>ikks.com</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">1·276·000</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">2</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#5 pull homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 chemise homme</span></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#4</span>
+    <img src="https://www.google.com/s2/favicons?domain=bexley.fr&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>bexley.fr</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">1·181·500</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">7</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 ceinture homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 echarpe homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 chemise homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 cardigan homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 cravate homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 chino homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 chaussures homme</span></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#5</span>
+    <img src="https://www.google.com/s2/favicons?domain=bensonandcherry.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>bensonandcherry.com</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">1·089·500</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">4</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 blouson homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#5 chemise homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 sweat homme</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#10 chino homme</span></div>
+  </div>
+</div>
+</div>
+<div style="margin:30px 0 12px;font-size:18px;font-weight:700;color:#9B59B6;">👤🧵 Type + Genre + Matière</div>
+<div class="grid">
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#1</span>
+    <img src="https://www.google.com/s2/favicons?domain=bexley.fr&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>bexley.fr</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">38·170</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">9</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 echarpe homme coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 pull homme laine</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 pull homme coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 chemise homme 100% coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 chaussures homme cuir</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 chemise homme coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 blouson homme coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 cravate homme soie</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#10 ceinture homme cuir</span></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#2</span>
+    <img src="https://www.google.com/s2/favicons?domain=celio.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>celio.com</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">27·240</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">9</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pull homme laine</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pantalon homme lin</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pull homme coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 sweat homme coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pantalon homme coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 chemise homme 100% coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 chemise homme lin</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 chemise homme coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 jean homme denim</span></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#3</span>
+    <img src="https://www.google.com/s2/favicons?domain=cafecoton.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>cafecoton.com</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">14·200</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">5</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chemise homme lin</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chemise homme 100% coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chemise homme coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 pantalon homme coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 pull homme coton</span></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#4</span>
+    <img src="https://www.google.com/s2/favicons?domain=uniqlo.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>uniqlo.com</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">14·140</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">4</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 jean homme denim</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 cardigan homme laine</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 pantalon homme lin</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 pull homme laine</span></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#5</span>
+    <img src="https://www.google.com/s2/favicons?domain=cocorico.store&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>cocorico.store</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">12·100</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">3</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 pull homme coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#5 sweat homme coton</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 pull homme laine</span></div>
+  </div>
+</div>
+</div>
+<div style="margin:30px 0 12px;font-size:18px;font-weight:700;color:#9B59B6;">👤🎨 Type + Genre + Couleur</div>
+<div class="grid">
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#1</span>
+    <img src="https://www.google.com/s2/favicons?domain=jules.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>jules.com</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">9·870</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">9</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 pull homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#5 pantalon homme beige</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 chino homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 pull homme vert</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 blouson homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 chino homme beige</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 chemise homme blanc</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 chemise homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#10 jean homme bleu</span></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#2</span>
+    <img src="https://www.google.com/s2/favicons?domain=zalando.fr&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>zalando.fr</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">7·450</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">9</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pantalon homme beige</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pull homme vert</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 jean homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chaussettes homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 chino homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 cuir homme marron</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 chemise homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 pull homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 blouson homme bleu</span></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#3</span>
+    <img src="https://www.google.com/s2/favicons?domain=celio.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>celio.com</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">7·070</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">8</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chino homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chemise homme blanc</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 chino homme beige</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 pull homme vert</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 pantalon homme beige</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 jean homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 blouson homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#10 pull homme bleu</span></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#4</span>
+    <img src="https://www.google.com/s2/favicons?domain=eden-park.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>eden-park.com</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">5·900</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">3</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 pull homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 chemise homme blanc</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 chemise homme bleu</span></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header" style="background:#9B59B6">
+    <span style="font-size:18px;font-weight:800;">#5</span>
+    <img src="https://www.google.com/s2/favicons?domain=amazon.fr&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
+    <span>amazon.fr</span>
+  </div>
+  <div class="card-body">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Score menace</span>
+      <span style="font-weight:700;font-size:13px;">5·430</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:12px;color:#888;">Requêtes</span>
+      <span style="font-weight:700;font-size:13px;">5</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 chemise homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 pull homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 pull homme vert</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 chaussettes homme bleu</span>
+<span style="background:#9B59B618;color:#9B59B6;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#10 cuir homme marron</span></div>
+  </div>
+</div>
+</div>
+</div>
+<div id="categories" class="section-title">📦 Par Catégorie Produit</div>
 <div style="margin:30px 0 12px;font-size:18px;font-weight:700;color:#2E86C1;">📦 Chemise</div>
 <div class="grid">
 <div class="card">
@@ -1760,120 +2273,7 @@
   </div>
 </div>
 </div>
-<div class="section-title">🏷️ Par Type de Combinaison</div>
-<div style="margin:30px 0 12px;font-size:18px;font-weight:700;color:#2c3e50;">🏷️ Type + Genre</div>
-<div class="grid">
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#1</span>
-    <img src="https://www.google.com/s2/favicons?domain=celio.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>celio.com</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">1·878·500</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">8</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 jean homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pantalon homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 blouson homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pull homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 sweat homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chemise homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 chino homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 cardigan homme</span></div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#2</span>
-    <img src="https://www.google.com/s2/favicons?domain=izac.fr&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>izac.fr</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">1·456·000</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">4</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 pantalon homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 pull homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 chemise homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 echarpe homme</span></div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#3</span>
-    <img src="https://www.google.com/s2/favicons?domain=ikks.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>ikks.com</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">1·276·000</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">2</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#5 pull homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 chemise homme</span></div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#4</span>
-    <img src="https://www.google.com/s2/favicons?domain=bexley.fr&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>bexley.fr</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">1·181·500</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">7</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 ceinture homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 echarpe homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 chemise homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 cardigan homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 cravate homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 chino homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 chaussures homme</span></div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#5</span>
-    <img src="https://www.google.com/s2/favicons?domain=bensonandcherry.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>bensonandcherry.com</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">1·089·500</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">4</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 blouson homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#5 chemise homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 sweat homme</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#10 chino homme</span></div>
-  </div>
-</div>
-</div>
+<div id="combos" class="section-title">🏷️ Par Type de Combinaison</div>
 <div style="margin:30px 0 12px;font-size:18px;font-weight:700;color:#2c3e50;">🏷️ Type + Matière</div>
 <div class="grid">
 <div class="card">
@@ -2100,246 +2500,6 @@
   </div>
 </div>
 </div>
-<div style="margin:30px 0 12px;font-size:18px;font-weight:700;color:#2c3e50;">🏷️ Type + Genre + Matière</div>
-<div class="grid">
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#1</span>
-    <img src="https://www.google.com/s2/favicons?domain=bexley.fr&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>bexley.fr</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">38·170</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">9</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 echarpe homme coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 pull homme laine</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 pull homme coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 chemise homme 100% coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 chaussures homme cuir</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 chemise homme coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 blouson homme coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 cravate homme soie</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#10 ceinture homme cuir</span></div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#2</span>
-    <img src="https://www.google.com/s2/favicons?domain=celio.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>celio.com</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">27·240</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">9</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pull homme laine</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pantalon homme lin</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pull homme coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 sweat homme coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pantalon homme coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 chemise homme 100% coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 chemise homme lin</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 chemise homme coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 jean homme denim</span></div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#3</span>
-    <img src="https://www.google.com/s2/favicons?domain=cafecoton.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>cafecoton.com</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">14·200</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">5</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chemise homme lin</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chemise homme 100% coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chemise homme coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 pantalon homme coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 pull homme coton</span></div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#4</span>
-    <img src="https://www.google.com/s2/favicons?domain=uniqlo.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>uniqlo.com</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">14·140</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">4</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 jean homme denim</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 cardigan homme laine</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 pantalon homme lin</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 pull homme laine</span></div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#5</span>
-    <img src="https://www.google.com/s2/favicons?domain=cocorico.store&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>cocorico.store</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">12·100</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">3</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 pull homme coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#5 sweat homme coton</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 pull homme laine</span></div>
-  </div>
-</div>
-</div>
-<div style="margin:30px 0 12px;font-size:18px;font-weight:700;color:#2c3e50;">🏷️ Type + Genre + Couleur</div>
-<div class="grid">
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#1</span>
-    <img src="https://www.google.com/s2/favicons?domain=jules.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>jules.com</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">9·870</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">9</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 pull homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#5 pantalon homme beige</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 chino homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 pull homme vert</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 blouson homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 chino homme beige</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 chemise homme blanc</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 chemise homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#10 jean homme bleu</span></div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#2</span>
-    <img src="https://www.google.com/s2/favicons?domain=zalando.fr&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>zalando.fr</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">7·450</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">9</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pantalon homme beige</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 pull homme vert</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 jean homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chaussettes homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 chino homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 cuir homme marron</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 chemise homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 pull homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#9 blouson homme bleu</span></div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#3</span>
-    <img src="https://www.google.com/s2/favicons?domain=celio.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>celio.com</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">7·070</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">8</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chino homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#1 chemise homme blanc</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 chino homme beige</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#3 pull homme vert</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 pantalon homme beige</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 jean homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#4 blouson homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#10 pull homme bleu</span></div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#4</span>
-    <img src="https://www.google.com/s2/favicons?domain=eden-park.com&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>eden-park.com</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">5·900</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">3</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#2 pull homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 chemise homme blanc</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#8 chemise homme bleu</span></div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header" style="background:#2c3e50">
-    <span style="font-size:18px;font-weight:800;">#5</span>
-    <img src="https://www.google.com/s2/favicons?domain=amazon.fr&sz=32" style="width:22px;height:22px;border-radius:4px" onerror="this.style.display='none'">
-    <span>amazon.fr</span>
-  </div>
-  <div class="card-body">
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Score menace</span>
-      <span style="font-weight:700;font-size:13px;">5·430</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-      <span style="font-size:12px;color:#888;">Requêtes</span>
-      <span style="font-weight:700;font-size:13px;">5</span>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;"><span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 chemise homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#6 pull homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 pull homme vert</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#7 chaussettes homme bleu</span>
-<span style="background:#2c3e5018;color:#2c3e50;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap;">#10 cuir homme marron</span></div>
-  </div>
-</div>
-</div>
 <div style="margin:30px 0 12px;font-size:18px;font-weight:700;color:#2c3e50;">🏷️ Type + Matière + Couleur</div>
 <div class="grid">
 <div class="card">
@@ -2536,7 +2696,7 @@
   </div>
 </div>
 </div>
-<div class="section-title">🧵 Par Matière — Champions</div>
+<div id="matieres" class="section-title">🧵 Par Matière — Champions</div>
 <div style="margin:30px 0 12px;font-size:18px;font-weight:700;color:#27AE60;">🧵 Coton</div>
 <div class="grid">
 <div class="card">
@@ -3151,7 +3311,7 @@
   </div>
 </div>
 </div>
-<div class="section-title">🎨 Par Couleur — Champions</div>
+<div id="couleurs" class="section-title">🎨 Par Couleur — Champions</div>
 <div style="margin:30px 0 12px;font-size:18px;font-weight:700;color:#2E86C1;">🎨 Bleu</div>
 <div class="grid">
 <div class="card">
@@ -3663,8 +3823,8 @@
   </div>
 </div>
 </div>
-<div class="section-title">🚨 Requêtes prioritaires — Balibaris absent du top 10</div>
-<div class="legend">Requêtes où Balibaris a des produits mais n'apparaît pas dans le top 10 Google. Classées par score menace (Volume × Nb produits).</div>
+<div id="priorites" class="section-title">🚨 Requêtes prioritaires — Balibaris absent du top 10</div>
+<div class="legend">Requêtes où Balibaris a des produits mais n'apparaît pas dans le top 10 Google.</div>
 <table class="priority-table"><tr><th>Requête</th><th>Volume</th><th>Nb produits</th><th>Score menace</th><th>Concurrent #1</th></tr>
 <tr><td><strong>chemise homme</strong></td><td>29·000</td><td>28</td><td style="font-weight:700;color:#E74C3C;">812·000</td><td>celio.com</td></tr>
 <tr><td><strong>pull homme</strong></td><td>29·000</td><td>16</td><td style="font-weight:700;color:#E74C3C;">464·000</td><td>celio.com</td></tr>
@@ -3706,5 +3866,15 @@
 <tr><td><strong>pull homme bleu</strong></td><td>200</td><td>8</td><td style="font-weight:700;color:#E74C3C;">1·600</td><td>zara.com</td></tr>
 <tr><td><strong>chemise homme blanc</strong></td><td>150</td><td>10</td><td style="font-weight:700;color:#E74C3C;">1·500</td><td>celio.com</td></tr>
 <tr><td><strong>chino bleu</strong></td><td>250</td><td>6</td><td style="font-weight:700;color:#E74C3C;">1·500</td><td>celio.com</td></tr>
+<tr><td><strong>pantalon homme coton</strong></td><td>150</td><td>9</td><td style="font-weight:700;color:#E74C3C;">1·350</td><td>celio.com</td></tr>
+<tr><td><strong>chino homme beige</strong></td><td>150</td><td>7</td><td style="font-weight:700;color:#E74C3C;">1·050</td><td>izac.fr</td></tr>
+<tr><td><strong>chino coton</strong></td><td>80</td><td>13</td><td style="font-weight:700;color:#E74C3C;">1·040</td><td>celio.com</td></tr>
+<tr><td><strong>blouson coton</strong></td><td>100</td><td>10</td><td style="font-weight:700;color:#E74C3C;">1·000</td><td>amazon.fr</td></tr>
+<tr><td><strong>chemise été</strong></td><td>250</td><td>4</td><td style="font-weight:700;color:#E74C3C;">1·000</td><td>izac.fr</td></tr>
+<tr><td><strong>cravate soie</strong></td><td>250</td><td>4</td><td style="font-weight:700;color:#E74C3C;">1·000</td><td>fatherandsons.fr</td></tr>
+<tr><td><strong>sweat coton</strong></td><td>200</td><td>5</td><td style="font-weight:700;color:#E74C3C;">1·000</td><td>wearejolies.com</td></tr>
+<tr><td><strong>pull homme vert</strong></td><td>150</td><td>6</td><td style="font-weight:700;color:#E74C3C;">900</td><td>zalando.fr</td></tr>
+<tr><td><strong>chemise coton bleu</strong></td><td>60</td><td>14</td><td style="font-weight:700;color:#E74C3C;">840</td><td>fatherandsons.fr</td></tr>
+<tr><td><strong>echarpe coton</strong></td><td>200</td><td>4</td><td style="font-weight:700;color:#E74C3C;">800</td><td>lafabriquedecharpe.fr</td></tr>
 </table>
 </body></html>
